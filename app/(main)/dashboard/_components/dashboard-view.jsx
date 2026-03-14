@@ -1,7 +1,7 @@
 "use client";
 
 
-import React from "react";
+import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -18,6 +18,7 @@ import {
   TrendingDown,
   Brain,
 } from "lucide-react";
+import { Edit } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import {
   Card,
@@ -28,8 +29,21 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import OnboardingForm from "../../onboarding/_components/onboarding-form";
+import { industries } from "@/data/industries";
 
 const DashboardView = ({ insights }) => {
+  const [openDesktop, setOpenDesktop] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
 
     if (insights === undefined) {
       return <div>Waiting for data...</div>;
@@ -87,6 +101,47 @@ const DashboardView = ({ insights }) => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <Badge variant="outline">Last updated: {lastUpdatedDate}</Badge>
+        
+        <Dialog open={openDesktop} onOpenChange={setOpenDesktop}>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm" className="hidden sm:flex">
+              <Edit className="w-4 h-4 mr-2" />
+              Update Profile
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[600px] overflow-auto max-h-[90vh]">
+            <DialogHeader>
+              <DialogTitle>Update Your Profile</DialogTitle>
+              <DialogDescription>
+                Change your industry or update your skills to get new insights.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+               {/* Reusing the onboarding form component, but since it has its own Card, we just render it inside */}
+               <OnboardingForm industries={industries} isEditing={true} onSuccess={() => setOpenDesktop(false)} />
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Mobile Update Profile Icon only */}
+        <Dialog open={openMobile} onOpenChange={setOpenMobile}>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="icon" className="sm:hidden">
+              <Edit className="w-4 h-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-full max-w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Update Your Profile</DialogTitle>
+              <DialogDescription>
+                Change your industry or update your skills to get new insights.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+               <OnboardingForm industries={industries} isEditing={true} onSuccess={() => setOpenMobile(false)} />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Market Overview Cards */}

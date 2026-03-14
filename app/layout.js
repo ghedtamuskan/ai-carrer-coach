@@ -3,13 +3,13 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
-import {dark}from "@clerk/themes"
+import { dark } from "@clerk/themes"
 import { checkUser } from '../lib/checkUser'
 import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"]
- 
+
 });
 
 export const metadata = {
@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
             <main className="min-h-screen pt-16">
               {children}
             </main>
-            <Toaster richColors/>
+            <Toaster richColors />
 
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-muted-foreground">

@@ -42,22 +42,39 @@ export const generateAIInsights = async (industry) => {
   try {
     // Mock mode: return fixed insights without calling Gemini
     if (process.env.MOCK_AI === "true") {
+      const sanitizedIndustry = industry || "Selected Industry";
       return {
         salaryRanges: [
           {
-            role: "Mid-level Professional",
-            min: 60000,
-            max: 90000,
-            median: 75000,
+            role: `Junior ${sanitizedIndustry} Specialist`,
+            min: 40000,
+            max: 65000,
+            median: 55000,
+            location: "Global",
+          },
+          {
+            role: `Senior ${sanitizedIndustry} Analyst`,
+            min: 75000,
+            max: 120000,
+            median: 95000,
             location: "Global",
           },
         ],
-        growthRate: 10,
+        growthRate: Math.floor(Math.random() * 15) + 5, // Random growth 5-20%
         demandLevel: "HIGH",
-        topSkills: ["Problem Solving", "Communication", "Teamwork"],
+        topSkills: [
+          `${sanitizedIndustry} Strategy`,
+          "Data Analysis",
+          "Project Management",
+          "Communication",
+        ],
         marketOutlook: "POSITIVE",
-        keyTrends: ["AI Adoption", "Remote Work"],
-        recommendedSkills: ["Cloud Basics", "Data Literacy"],
+        keyTrends: [
+          `AI Integration in ${sanitizedIndustry}`,
+          "Automation Workflows",
+          "Remote Collaboration",
+        ],
+        recommendedSkills: ["Emerging Tech Literacy", "Adaptability"],
       };
     }
 

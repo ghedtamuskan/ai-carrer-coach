@@ -30,7 +30,7 @@ import useFetch from "@/hooks/use-fetch";
 import { onboardingSchema } from "@/app/lib/schema";
 import { updateUser } from "@/actions/user";
 
-const OnboardingForm = ({ industries }) => {
+const OnboardingForm = ({ industries, isEditing = false, onSuccess }) => {
   const router = useRouter();
   const [selectedIndustry, setSelectedIndustry] = useState(null);
 
@@ -67,27 +67,33 @@ const OnboardingForm = ({ industries }) => {
 
   useEffect(() => {
     if (updateResult && !updateLoading) {
-      toast.success("Profile completed successfully!");
-      router.push("/dashboard");
+      toast.success(isEditing ? "Profile updated successfully!" : "Profile completed successfully!");
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push("/dashboard");
+      }
       router.refresh();
     }
-  }, [updateResult, updateLoading, router]);
+  }, [updateResult, updateLoading, router, isEditing, onSuccess]);
 
   const watchIndustry = watch("industry");
 
-  return (
-    <div className="flex items-center justify-center bg-background">
-      <Card className="w-full max-w-lg mt-10 mx-2 ">
-        <CardHeader>
-          <CardTitle className="gradient-title text-4xl">
-            Complete Your Profile
-          </CardTitle>
-          <CardDescription>
-            Select your industry to get personalized career insights and
-            recommendations.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+  const formContent = (
+    <div className={isEditing ? "" : "flex items-center justify-center bg-background"}>
+      <Card className={isEditing ? "border-0 shadow-none" : "w-full max-w-lg mt-10 mx-2"}>
+        {!isEditing && (
+          <CardHeader>
+            <CardTitle className="gradient-title text-4xl">
+              Complete Your Profile
+            </CardTitle>
+            <CardDescription>
+              Select your industry to get personalized career insights and
+              recommendations.
+            </CardDescription>
+          </CardHeader>
+        )}
+        <CardContent className={isEditing ? "p-0" : ""}>
           
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2 ">
@@ -104,7 +110,7 @@ const OnboardingForm = ({ industries }) => {
                 <SelectTrigger id="industry " >
                   <SelectValue placeholder="Select an industry" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="z-50 max-h-60 overflow-y-auto bg-background">
                     <SelectGroup>
                     <SelectLabel>Industries</SelectLabel>
                     {industries.map((ind)=>{
@@ -134,7 +140,7 @@ const OnboardingForm = ({ industries }) => {
                   <SelectTrigger id="subIndustry" >
                     <SelectValue placeholder="Select your specialization" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="z-50 max-h-60 overflow-y-auto w-[var(--radix-select-trigger-width)] bg-background">
   
                     <SelectGroup>
                       <SelectLabel>Specializations</SelectLabel>
@@ -206,7 +212,7 @@ const OnboardingForm = ({ industries }) => {
                   Saving...
                 </>
               ) : (
-                "Complete Profile"
+                isEditing ? "Update Profile" : "Complete Profile"
               )}
             </Button>
           </form>
@@ -214,6 +220,8 @@ const OnboardingForm = ({ industries }) => {
       </Card>
     </div>
   );
+
+  return formContent;
 };
 
 export default OnboardingForm;

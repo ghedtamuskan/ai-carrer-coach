@@ -49,33 +49,80 @@ export async function generateQuiz() {      // check user login or not
   try {
     // Mock mode: return a fixed quiz without calling Gemini
     if (process.env.MOCK_AI === "true") {
+      const industry = user.industry || "General";
       return {
         questions: [
           {
-            question: `What is one core responsibility of a ${
-              user.industry || "software"
-            } professional?`,
+            question: `What is a core focus area for a successful ${industry} professional?`,
             options: [
-              "Writing clear, maintainable code",
-              "Ignoring best practices",
-              "Avoiding communication with the team",
-              "Skipping tests",
+              "Ignoring current market trends",
+              "Using outdated tools and strategies",
+              `Understanding ${industry} best practices and methodologies`,
+              "Working completely isolated from other departments",
             ],
-            correctAnswer: "Writing clear, maintainable code",
+            correctAnswer: `Understanding ${industry} best practices and methodologies`,
             explanation:
-              "A key responsibility is writing code that is easy to read, maintain, and extend.",
+              `Staying updated with ${industry} standards is crucial for long-term career success and delivering quality results.`,
           },
           {
-            question: "Which practice helps prevent bugs in production?",
+            question: `Which practice helps prevent bugs or errors in production?`,
             options: [
-              "Writing unit and integration tests",
               "Deploying without review",
-              "Editing code directly on the server",
-              "Skipping code reviews",
+              "Testing and reviewing work thoroughly before launch",
+              "Editing files directly on the live server",
+              "Skipping quality assurance checks",
             ],
-            correctAnswer: "Writing unit and integration tests",
+            correctAnswer: "Testing and reviewing work thoroughly before launch",
             explanation:
-              "Tests catch issues early and increase confidence in changes.",
+              "Tests and reviews catch issues early and increase confidence in your work.",
+          },
+          {
+            question: `Which skill is most critical for advancing in ${industry}?`,
+            options: [
+              "Refusing to learn new technologies or methods",
+              "Avoiding feedback from peers or management",
+              "Focusing only on a single, narrow task",
+              "Continuous learning and adaptability",
+            ],
+            correctAnswer: "Continuous learning and adaptability",
+            explanation:
+              `The ${industry} landscape evolves rapidly, requiring professionals to constantly adapt and acquire new skills.`,
+          },
+          {
+            question: `When dealing with a difficult client or stakeholder in ${industry}, what is the best approach?`,
+            options: [
+              "Ignore their emails until they give up",
+              "Listen actively to their concerns and propose constructive solutions",
+              "Argue with them immediately to prove you are right",
+              "Pass the problem instantly to someone else without trying",
+            ],
+            correctAnswer: "Listen actively to their concerns and propose constructive solutions",
+            explanation:
+              `Professionalism and empathy are critical in ${industry} to maintain strong working relationships and trust.`,
+          },
+          {
+            question: `How should a ${industry} professional handle missing a critical project deadline?`,
+            options: [
+              "Hide the fact that the deadline was missed",
+              "Blame another team member",
+              "Communicate the delay early, explain the blocker, and provide a new timeline",
+              "Rush the work and deliver a broken or incomplete result",
+            ],
+            correctAnswer: "Communicate the delay early, explain the blocker, and provide a new timeline",
+            explanation:
+              "Transparency and proactive communication are highly valued traits when managing expectations.",
+          },
+          {
+            question: `What role does data play in modern ${industry} strategies?`,
+            options: [
+              "It drives informed decision-making and helps measure success",
+              "It is completely irrelevant and mostly a distraction",
+              "It is only useful for the IT department",
+              "It should be guessed rather than measured",
+            ],
+            correctAnswer: "It drives informed decision-making and helps measure success",
+            explanation:
+              `Regardless of your specific role, leveraging data in ${industry} helps optimize outcomes and prove value.`,
           },
         ],
       };
